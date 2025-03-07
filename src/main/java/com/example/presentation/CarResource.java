@@ -1,5 +1,7 @@
 package com.example.presentation;
 
+import com.example.business.CarService;
+import com.example.dto.CarResponsList;
 import com.example.persistence.CarRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -16,11 +18,11 @@ import java.util.Objects;
 @Path("cars")
 public class CarResource {
 
-    private CarRepository repository;
+    private CarService carService;
 
     @Inject
-    public CarResource(CarRepository repository) {
-        this.repository = repository;
+    public CarResource(CarService carService) {
+        this.carService = carService;
     }
 
     public CarResource() {
@@ -30,11 +32,8 @@ public class CarResource {
     //"http://localhost:8080/api/cars"
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CarRespons> getCars() {
-        return repository.findAll()
-                .map(CarRespons::new)
-                .filter(Objects::nonNull)
-                .toList();
+    public CarResponsList getAllCars(){
+        return new CarResponsList(carService.getCars());
     }
 
 
@@ -46,8 +45,7 @@ public class CarResource {
         if(car == null)
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Car cannot be null").build();
-        Car newCar = CarMapper.map(car);
-        newCar = repository.insert(newCar);
+        Car newCar = carService.createCar(car);
         return Response.status(Response.Status.CREATED)
                 .header("Location", "/api/cars/" + newCar.getId())
                 .build();
