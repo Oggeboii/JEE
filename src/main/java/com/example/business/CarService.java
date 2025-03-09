@@ -26,6 +26,15 @@ public class CarService {
     public CarService() {
     }
 
+    public CarRespons getCarById(Long id) {
+        return repository.findById(id)
+                .map(CarRespons::new)
+                .filter(Objects::nonNull)
+                .orElseThrow(
+                        () -> new RuntimeException("Car with id " + id + " not found")
+                );
+    }
+
     public List<CarRespons> getCars() {
         return repository.findAll()
                 .map(CarRespons::new)

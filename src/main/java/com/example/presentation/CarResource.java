@@ -28,6 +28,14 @@ public class CarResource {
     public CarResource() {
     }
 
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public CarRespons getCar(@PathParam("id") Long id) {
+        return carService.getCarById(id);
+    }
+
+
 
     //"http://localhost:8080/api/cars"
     @GET
@@ -35,6 +43,7 @@ public class CarResource {
     public CarResponsList getAllCars(){
         return new CarResponsList(carService.getCars());
     }
+
 
 
 
