@@ -4,6 +4,8 @@ package com.example.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.Year;
 import java.util.Objects;
 
 @Setter
@@ -12,8 +14,8 @@ import java.util.Objects;
 public class Car {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "company", nullable = false)
@@ -25,8 +27,8 @@ public class Car {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "year model", nullable = false)
-    private Long yearModel;
+    @Column(name = "year_model", nullable = false)
+    private Year yearModel;
 
 
     @Override

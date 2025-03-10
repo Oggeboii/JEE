@@ -5,9 +5,11 @@ import com.example.dto.CreateCar;
 import com.example.dto.UpdateCar;
 import com.example.entity.Car;
 import com.example.exceptions.NotFound;
+import com.example.mapper.CarMapper;
 import com.example.persistence.CarRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -30,8 +32,7 @@ public class CarService {
 
     public CarRespons getCarById(Long id) {
         return repository.findById(id)
-                .map(CarRespons::new)
-                .filter(Objects::nonNull)
+                .map(CarMapper::map)
                 .orElseThrow(
                         () -> new NotFound("Car with id " + id + " not found")
                 );
@@ -39,7 +40,7 @@ public class CarService {
 
     public List<CarRespons> getCars() {
         return repository.findAll()
-                .map(CarRespons::new)
+                .map(CarMapper::map)
                 .filter(Objects::nonNull)
                 .toList();
     }
@@ -53,17 +54,15 @@ public class CarService {
     public void updateCar(Long id, UpdateCar car){
         var oldCar = repository.findById(id).orElseThrow(() ->
                 new NotFound("Car with id " + id + " not found"));
-        if (car.company() != null) {
-            oldCar.setCompany(car.company());
-        }
-        if (car.description() != null)
-            oldCar.setDescription(car.description());
-        if (car.model() != null) {
-            oldCar.setModel(car.model());
-        }
-        if (car.yearModel() != null)
-            oldCar.setYearModel(car.yearModel());
+        CarMapper.map(car, oldCar);
         repository.update(oldCar);
     }
+
+    public void deleteCar(Long id){
+        var car = repository.findById(id).orElseThrow(()->
+                new NotFound("Car with id " + id + " not found"));
+        repository.delete(car);
+    }
+
 
 }
