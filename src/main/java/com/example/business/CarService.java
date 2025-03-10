@@ -3,6 +3,7 @@ package com.example.business;
 import com.example.dto.CarRespons;
 import com.example.dto.CreateCar;
 import com.example.entity.Car;
+import com.example.exceptions.NotFound;
 import com.example.persistence.CarRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -31,7 +32,7 @@ public class CarService {
                 .map(CarRespons::new)
                 .filter(Objects::nonNull)
                 .orElseThrow(
-                        () -> new RuntimeException("Car with id " + id + " not found")
+                        () -> new NotFound("Car with id " + id + " not found")
                 );
     }
 

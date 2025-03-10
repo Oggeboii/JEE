@@ -2,18 +2,16 @@ package com.example.presentation;
 
 import com.example.business.CarService;
 import com.example.dto.CarResponsList;
-import com.example.persistence.CarRepository;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import com.example.dto.CreateCar;
 import com.example.dto.CarRespons;
 import com.example.entity.Car;
-import com.example.mapper.CarMapper;
 
-import java.util.List;
-import java.util.Objects;
 
 @Path("cars")
 public class CarResource {
@@ -28,13 +26,13 @@ public class CarResource {
     public CarResource() {
     }
 
+    //"http://localhost:8080/api/cars/1"
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public CarRespons getCar(@PathParam("id") Long id) {
         return carService.getCarById(id);
     }
-
 
 
     //"http://localhost:8080/api/cars"
@@ -45,12 +43,9 @@ public class CarResource {
     }
 
 
-
-
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createNewCar(CreateCar car) {
+    public Response createNewCar(@Valid @NotNull CreateCar car) {
         if(car == null)
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Car cannot be null").build();
@@ -59,6 +54,4 @@ public class CarResource {
                 .header("Location", "/api/cars/" + newCar.getId())
                 .build();
     }
-
-
 }
