@@ -2,6 +2,7 @@ package com.example.business;
 
 import com.example.dto.CarRespons;
 import com.example.dto.CreateCar;
+import com.example.dto.UpdateCar;
 import com.example.entity.Car;
 import com.example.exceptions.NotFound;
 import com.example.persistence.CarRepository;
@@ -47,6 +48,22 @@ public class CarService {
         var newCar = map(car);
         newCar = repository.insert(newCar);
         return newCar;
+    }
+
+    public void updateCar(Long id, UpdateCar car){
+        var oldCar = repository.findById(id).orElseThrow(() ->
+                new NotFound("Car with id " + id + " not found"));
+        if (car.company() != null) {
+            oldCar.setCompany(car.company());
+        }
+        if (car.description() != null)
+            oldCar.setDescription(car.description());
+        if (car.model() != null) {
+            oldCar.setModel(car.model());
+        }
+        if (car.yearModel() != null)
+            oldCar.setYearModel(car.yearModel());
+        repository.update(oldCar);
     }
 
 }

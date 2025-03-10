@@ -2,6 +2,7 @@ package com.example.presentation;
 
 import com.example.business.CarService;
 import com.example.dto.CarResponsList;
+import com.example.dto.UpdateCar;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -53,5 +54,13 @@ public class CarResource {
         return Response.status(Response.Status.CREATED)
                 .header("Location", "/api/cars/" + newCar.getId())
                 .build();
+    }
+
+    @PATCH
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateCar(@PathParam("id") Long id, @Valid @NotNull UpdateCar car) {
+        carService.updateCar(id, car);
+        return Response.noContent().build();
     }
 }
