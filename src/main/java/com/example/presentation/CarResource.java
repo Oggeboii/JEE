@@ -63,4 +63,13 @@ public class CarResource {
         carService.updateCar(id, car);
         return Response.noContent().build();
     }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteCar(@PathParam("id") Long id) {
+        carService.deleteCar(id);
+        return Response.noContent().build();
+    }
+
+
 }
