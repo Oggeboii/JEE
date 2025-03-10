@@ -6,16 +6,17 @@ import com.example.dto.UpdateCar;
 import com.example.entity.Car;
 
 public class CarMapper {
-    private CarMapper() {}
+    private CarMapper() {
+    }
 
     public static CarRespons map(Car car) {
-        if(null == car)
+        if (null == car)
             return null;
         return new CarRespons(car.getId(), car.getCompany(), car.getModel(), car.getDescription(), car.getYearModel().getValue());
     }
 
     public static Car map(CreateCar car) {
-        if(null == car)
+        if (null == car)
             return null;
         Car newCar = new Car();
         newCar.setCompany(car.company());
@@ -39,8 +40,6 @@ public class CarMapper {
             existingCar.setYearModel(updateCar.yearModel());
         }
     }
-
-
 
 
 }

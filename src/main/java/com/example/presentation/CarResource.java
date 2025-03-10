@@ -36,11 +36,23 @@ public class CarResource {
     }
 
 
+//    //"http://localhost:8080/api/cars"
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public CarResponsList getAllCars(){
+//        return new CarResponsList(carService.getCars());
+//    }
+
+
     //"http://localhost:8080/api/cars"
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public CarResponsList getAllCars(){
-        return new CarResponsList(carService.getCars());
+    public CarResponsList getAllCars(@QueryParam("company") String company) {
+        if (company != null && !company.isEmpty()) {
+            return new CarResponsList(carService.getCarsByCompany(company));
+        } else {
+            return new CarResponsList(carService.getCars());
+        }
     }
 
 

@@ -14,6 +14,7 @@ import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Objects;
 
+
 import static com.example.mapper.CarMapper.*;
 
 @ApplicationScoped
@@ -36,6 +37,15 @@ public class CarService {
                 .orElseThrow(
                         () -> new NotFound("Car with id " + id + " not found")
                 );
+    }
+
+    public List<CarRespons> getCarsByCompany(String company) {
+        List<Car> cars = repository.findByCompany(company);
+        return cars
+                .stream()
+                .map(CarMapper::map)
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     public List<CarRespons> getCars() {
