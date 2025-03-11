@@ -11,6 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 
+import java.time.Year;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,6 +48,16 @@ public class CarService {
                 .filter(Objects::nonNull)
                 .toList();
     }
+
+    public List<CarRespons> getCarsByYear(Year year) {
+        List<Car> cars = repository.findByYearModel(year);
+        return cars
+                .stream()
+                .map(CarMapper::map)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
 
     public List<CarRespons> getCars() {
         return repository.findAll()

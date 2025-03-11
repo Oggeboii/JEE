@@ -13,6 +13,8 @@ import com.example.dto.CreateCar;
 import com.example.dto.CarRespons;
 import com.example.entity.Car;
 
+import java.time.Year;
+
 
 @Path("cars")
 public class CarResource {
@@ -47,10 +49,14 @@ public class CarResource {
     //"http://localhost:8080/api/cars"
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public CarResponsList getAllCars(@QueryParam("company") String company) {
+    public CarResponsList getAllCars(@QueryParam("company") String company, @QueryParam("yearModel") Integer yearModel) {
         if (company != null && !company.isEmpty()) {
             return new CarResponsList(carService.getCarsByCompany(company));
-        } else {
+        }
+        else if (yearModel != null) {
+            return new CarResponsList(carService.getCarsByYear(Year.of(yearModel)));
+        }
+        else {
             return new CarResponsList(carService.getCars());
         }
     }
