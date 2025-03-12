@@ -5,6 +5,8 @@ import com.example.dto.CreateCar;
 import com.example.dto.UpdateCar;
 import com.example.entity.Car;
 
+import java.time.Year;
+
 public class CarMapper {
     private CarMapper() {
     }
@@ -22,7 +24,8 @@ public class CarMapper {
         newCar.setCompany(car.company());
         newCar.setModel(car.model());
         newCar.setDescription(car.description());
-        newCar.setYearModel(car.yearModel());
+        newCar.setYearModel(Year.of(car.yearModel()));
+        newCar.setLicenseNumber(car.licenseNumber());
         return newCar;
     }
 

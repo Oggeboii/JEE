@@ -1,5 +1,7 @@
 package com.example.dto;
 
 
-public record CarRespons(Long id, String company, String model, String description, int yearModel, String licenseNumber) {
+import java.time.Year;
+
+public record CarRespons(Long id, String company, String model, String description, Integer yearModel, String licenseNumber) {
 }

@@ -29,21 +29,6 @@ public class CarResource {
     public CarResource() {
     }
 
-    //"http://localhost:8080/api/cars/1"
-//    @GET
-//    @Path("/{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public CarRespons getCar(@PathParam("id") Long id) {
-//        return carService.getCarById(id);
-//    }
-//
-//    @GET
-//    @Path("/{license_number}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public CarRespons getCarByLicenseNumber(@PathParam("license_number") String licenseNumber) {
-//        return carService.getCarByLicenseNumber(licenseNumber);
-//    }
-
     @GET
     @Path("one")
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,7 +38,6 @@ public class CarResource {
         } else
             return carService.getCarByLicenseNumber(licenseNumber);
     }
-
 
     //"http://localhost:8080/api/cars"
     @GET
@@ -73,10 +57,12 @@ public class CarResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createNewCar(@Valid @NotNull CreateCar car) {
-        if (car == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Car cannot be null").build();
+        if (carService.licenseNumberExists(car.licenseNumber())) {
+            return Response.status(Response.Status.CONFLICT)
+                    .entity("License number already exists")
+                    .build();
         }
         Car newCar = carService.createCar(car);
         return Response.status(Response.Status.CREATED)

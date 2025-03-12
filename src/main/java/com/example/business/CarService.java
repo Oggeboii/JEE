@@ -22,6 +22,7 @@ import static com.example.mapper.CarMapper.*;
 public class CarService {
 
     private CarRepository repository;
+    private CarRepository carRepository;
 
     @Inject
     public CarService(CarRepository carRepository) {
@@ -37,6 +38,10 @@ public class CarService {
                 .orElseThrow(
                         () -> new NotFound("Car with id " + id + " not found")
                 );
+    }
+
+    public boolean licenseNumberExists(String licenseNumber) {
+        return repository.findByLicenseNumber(licenseNumber).isPresent();
     }
 
     public CarRespons getCarByLicenseNumber(String licenseNumber) {
