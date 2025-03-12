@@ -41,7 +41,7 @@ public class CarResource {
 //    //"http://localhost:8080/api/cars"
 //    @GET
 //    @Produces(MediaType.APPLICATION_JSON)
-//    public CarResponsList getAllCars(){
+//    public CarResponsList getCars(){
 //        return new CarResponsList(carService.getCars());
 //    }
 
@@ -49,12 +49,12 @@ public class CarResource {
     //"http://localhost:8080/api/cars"
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public CarResponsList getAllCars(@QueryParam("company") String company, @QueryParam("yearModel") Integer yearModel, @QueryParam("model") String model) {
+    public CarResponsList getCars(@QueryParam("company") String company, @QueryParam("yearModelStart") Integer yearModelStart, @QueryParam("yearModelEnd") Integer yearModelEnd , @QueryParam("model") String model) {
         if (company != null && !company.isEmpty()) {
             return new CarResponsList(carService.getCarsByCompany(company));
         }
-        else if (yearModel != null) {
-            return new CarResponsList(carService.getCarsByYear(Year.of(yearModel)));
+        else if (yearModelStart != null && yearModelEnd != null) {
+            return new CarResponsList(carService.getCarsByYear(Year.of(yearModelStart),Year.of(yearModelEnd)));
         }
         else if (model != null && !model.isEmpty()) {
             return new CarResponsList(carService.getCarsByModel(model));

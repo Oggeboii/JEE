@@ -21,7 +21,6 @@ import static com.example.mapper.CarMapper.*;
 @ApplicationScoped
 public class CarService {
 
-
     private CarRepository repository;
 
     @Inject
@@ -29,8 +28,7 @@ public class CarService {
         this.repository = carRepository;
     }
 
-    public CarService() {
-    }
+    public CarService() {}
 
     public CarRespons getCarById(Long id) {
         return repository.findById(id)
@@ -49,8 +47,13 @@ public class CarService {
                 .toList();
     }
 
-    public List<CarRespons> getCarsByYear(Year year) {
-        List<Car> cars = repository.findByYearModel(year);
+    public List<CarRespons> getCarsByYear(Year yearStart, Year yearEnd) {
+        List<Car> cars = repository.findByYearModel(yearStart);
+        while (yearStart.isBefore(yearEnd)) {
+            yearStart = yearStart.plusYears(1);
+            cars.addAll(repository.findByYearModel(yearStart));
+        }
+
         return cars
                 .stream()
                 .map(CarMapper::map)
@@ -75,21 +78,21 @@ public class CarService {
                 .toList();
     }
 
-    public Car createCar(CreateCar car){
+    public Car createCar(CreateCar car) {
         var newCar = map(car);
         newCar = repository.insert(newCar);
         return newCar;
     }
 
-    public void updateCar(Long id, UpdateCar car){
+    public void updateCar(Long id, UpdateCar car) {
         var oldCar = repository.findById(id).orElseThrow(() ->
                 new NotFound("Car with id " + id + " not found"));
         CarMapper.map(car, oldCar);
         repository.update(oldCar);
     }
 
-    public void deleteCar(Long id){
-        var car = repository.findById(id).orElseThrow(()->
+    public void deleteCar(Long id) {
+        var car = repository.findById(id).orElseThrow(() ->
                 new NotFound("Car with id " + id + " not found"));
         repository.delete(car);
     }
