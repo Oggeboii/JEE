@@ -58,6 +58,15 @@ public class CarService {
                 .toList();
     }
 
+    public List<CarRespons> getCarsByModel(String model) {
+        List<Car> cars = repository.findByModel(model);
+        return cars
+                .stream()
+                .map(CarMapper::map)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
 
     public List<CarRespons> getCars() {
         return repository.findAll()
