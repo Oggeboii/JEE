@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
     @Target({ElementType.TYPE})
     @Retention(RetentionPolicy.RUNTIME)
-    @Constraint(validatedBy = {ValidCarValidator.class})
+    @Constraint(validatedBy = {ValidCreateCarValidator.class, ValidUpdateCarValidator.class})
     public @interface ValidCar {
        String message() default "Not a valid car";
 
