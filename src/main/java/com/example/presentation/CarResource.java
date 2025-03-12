@@ -30,36 +30,42 @@ public class CarResource {
     }
 
     //"http://localhost:8080/api/cars/1"
-    @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public CarRespons getCar(@PathParam("id") Long id) {
-        return carService.getCarById(id);
-    }
-
-
-//    //"http://localhost:8080/api/cars"
 //    @GET
+//    @Path("/{id}")
 //    @Produces(MediaType.APPLICATION_JSON)
-//    public CarResponsList getCars(){
-//        return new CarResponsList(carService.getCars());
+//    public CarRespons getCar(@PathParam("id") Long id) {
+//        return carService.getCarById(id);
 //    }
+//
+//    @GET
+//    @Path("/{license_number}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public CarRespons getCarByLicenseNumber(@PathParam("license_number") String licenseNumber) {
+//        return carService.getCarByLicenseNumber(licenseNumber);
+//    }
+
+    @GET
+    @Path("one")
+    @Produces(MediaType.APPLICATION_JSON)
+    public CarRespons getCar(@QueryParam("id") Long id, @QueryParam("licenseNumber") String licenseNumber) {
+        if (id != null) {
+            return carService.getCarById(id);
+        } else
+            return carService.getCarByLicenseNumber(licenseNumber);
+    }
 
 
     //"http://localhost:8080/api/cars"
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public CarResponsList getCars(@QueryParam("company") String company, @QueryParam("yearModelStart") Integer yearModelStart, @QueryParam("yearModelEnd") Integer yearModelEnd , @QueryParam("model") String model) {
+    public CarResponsList getCars(@QueryParam("company") String company, @QueryParam("yearModelStart") Integer yearModelStart, @QueryParam("yearModelEnd") Integer yearModelEnd, @QueryParam("model") String model) {
         if (company != null && !company.isEmpty()) {
             return new CarResponsList(carService.getCarsByCompany(company));
-        }
-        else if (yearModelStart != null && yearModelEnd != null) {
-            return new CarResponsList(carService.getCarsByYear(Year.of(yearModelStart),Year.of(yearModelEnd)));
-        }
-        else if (model != null && !model.isEmpty()) {
+        } else if (yearModelStart != null && yearModelEnd != null) {
+            return new CarResponsList(carService.getCarsByYear(Year.of(yearModelStart), Year.of(yearModelEnd)));
+        } else if (model != null && !model.isEmpty()) {
             return new CarResponsList(carService.getCarsByModel(model));
-        }
-        else {
+        } else {
             return new CarResponsList(carService.getCars());
         }
     }
@@ -68,9 +74,10 @@ public class CarResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNewCar(@Valid @NotNull CreateCar car) {
-        if(car == null)
+        if (car == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Car cannot be null").build();
+        }
         Car newCar = carService.createCar(car);
         return Response.status(Response.Status.CREATED)
                 .header("Location", "/api/cars/" + newCar.getId())

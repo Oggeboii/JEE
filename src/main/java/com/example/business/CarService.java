@@ -28,7 +28,8 @@ public class CarService {
         this.repository = carRepository;
     }
 
-    public CarService() {}
+    public CarService() {
+    }
 
     public CarRespons getCarById(Long id) {
         return repository.findById(id)
@@ -36,6 +37,15 @@ public class CarService {
                 .orElseThrow(
                         () -> new NotFound("Car with id " + id + " not found")
                 );
+    }
+
+    public CarRespons getCarByLicenseNumber(String licenseNumber) {
+        return repository.findByLicenseNumber(licenseNumber)
+                .map(CarMapper::map)
+                .orElseThrow(
+                        () -> new NotFound("Car with license number " + licenseNumber + " not found")
+                );
+
     }
 
     public List<CarRespons> getCarsByCompany(String company) {
@@ -53,7 +63,6 @@ public class CarService {
             yearStart = yearStart.plusYears(1);
             cars.addAll(repository.findByYearModel(yearStart));
         }
-
         return cars
                 .stream()
                 .map(CarMapper::map)

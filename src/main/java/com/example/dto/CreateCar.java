@@ -3,6 +3,7 @@ package com.example.dto;
 import com.example.rules.ValidCar;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 import java.time.Year;
@@ -11,5 +12,6 @@ import java.time.Year;
 public record CreateCar(@NotBlank @NotNull String company,
                         @NotBlank @NotNull String model,
                         @NotBlank @NotNull String description,
-                        @Positive Year yearModel) {
+                        @Positive Year yearModel,
+                        @Pattern(regexp = "^[A-Za-z]{3}\\d{3}$") String licenseNumber) {
 }

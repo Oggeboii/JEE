@@ -2,14 +2,18 @@ package com.example.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Year;
 import java.util.Objects;
 
-@Setter
 @Getter
+@Setter
 @Entity
 public class Car {
 
@@ -18,17 +22,26 @@ public class Car {
     @Column(name = "id")
     private Long id;
 
+    @NotBlank
     @Column(name = "company", nullable = false)
     private String company;
 
+    @NotBlank
     @Column(name = "model", nullable = false)
     private String model;
 
+    @Size(max = 1000)
     @Column(name = "description", nullable = false)
     private String description;
 
+    @PastOrPresent
     @Column(name = "year_model", nullable = false)
     private Year yearModel;
+
+    @NotBlank
+    @Pattern(regexp = "^[A-Za-z]{3}\\d{3}$", message = "license number must be 3 letters and 3 digits")
+    @Column(name = "license_number", nullable = false, unique = true)
+    private String licenseNumber;
 
 
     @Override
@@ -51,7 +64,8 @@ public class Car {
                 "company = " + company + ", " +
                 "model = " + model + ", " +
                 "description = " + description + ", " +
-                "yearModel = " + yearModel + ")";
+                "yearModel = " + yearModel + "," +
+                "licenseNumber" + licenseNumber + ")";
     }
 
 

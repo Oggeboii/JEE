@@ -12,7 +12,7 @@ public class CarMapper {
     public static CarRespons map(Car car) {
         if (null == car)
             return null;
-        return new CarRespons(car.getId(), car.getCompany(), car.getModel(), car.getDescription(), car.getYearModel().getValue());
+        return new CarRespons(car.getId(), car.getCompany(), car.getModel(), car.getDescription(), car.getYearModel().getValue(), car.getLicenseNumber());
     }
 
     public static Car map(CreateCar car) {
