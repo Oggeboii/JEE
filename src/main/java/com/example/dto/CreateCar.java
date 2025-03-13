@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 
-@ValidCar(message = "here is a message")
+@ValidCar(message = "Unable to create car")
 public record CreateCar(@NotBlank @NotNull String company,
                         @NotBlank @NotNull String model,
                         @NotBlank @NotNull String description,
