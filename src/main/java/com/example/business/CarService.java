@@ -22,7 +22,7 @@ import static com.example.mapper.CarMapper.*;
 public class CarService {
 
     private CarRepository repository;
-    private CarRepository carRepository;
+
 
     @Inject
     public CarService(CarRepository carRepository) {
@@ -44,6 +44,13 @@ public class CarService {
         return repository.findByLicenseNumber(licenseNumber).isPresent();
     }
 
+    public boolean combinationExists(String company, String model, Year year) {
+        return repository.findByCompany(company).stream()
+                .filter(car -> car.getModel().equals(model))
+                .anyMatch(car -> car.getYearModel().equals(year));
+
+    }
+
     public CarRespons getCarByLicenseNumber(String licenseNumber) {
         return repository.findByLicenseNumber(licenseNumber)
                 .map(CarMapper::map)
@@ -62,12 +69,8 @@ public class CarService {
                 .toList();
     }
 
-    public List<CarRespons> getCarsByYear(Year yearStart, Year yearEnd) {
-        List<Car> cars = repository.findByYearModel(yearStart);
-        while (yearStart.isBefore(yearEnd)) {
-            yearStart = yearStart.plusYears(1);
-            cars.addAll(repository.findByYearModel(yearStart));
-        }
+    public List<CarRespons> getCarsBetweenYears(Year yearStart, Year yearEnd) {
+        List<Car> cars = repository.findBetweenYearModel(yearStart, yearEnd);
         return cars
                 .stream()
                 .map(CarMapper::map)
