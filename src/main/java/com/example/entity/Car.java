@@ -22,11 +22,11 @@ public class Car {
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Company is required")
     @Column(name = "company", nullable = false)
     private String company;
 
-    @NotBlank
+    @NotBlank(message = "Model i required")
     @Column(name = "model", nullable = false)
     private String model;
 
@@ -34,7 +34,7 @@ public class Car {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @PastOrPresent
+    @PastOrPresent(message = "year model must be in past or present")
     @Column(name = "year_model", nullable = false)
     private Year yearModel;
 
