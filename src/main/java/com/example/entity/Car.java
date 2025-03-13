@@ -15,6 +15,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"company","model","year_Model"}))
+
+
 public class Car {
 
     @Id
