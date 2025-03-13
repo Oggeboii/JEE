@@ -1,10 +1,8 @@
 package com.example.persistence;
 
 
-import jakarta.data.repository.Find;
-import jakarta.data.repository.Repository;
+import jakarta.data.repository.*;
 import com.example.entity.Car;
-import jakarta.data.repository.CrudRepository;
 
 
 import java.time.Year;
@@ -19,6 +17,8 @@ public interface CarRepository extends CrudRepository<Car, Long> {
 
     @Find
     List<Car> findByCompany(String company);
+
+    List<Car> findBetweenYearModel(@By("yearModel") Year yearModelStart, @By("yearModel") Year yearModelEnd);
 
     @Find
     List<Car> findByYearModel(Year yearModel);
