@@ -46,7 +46,7 @@ public class CarResource {
         if (company != null && !company.isEmpty()) {
             return new CarResponsList(carService.getCarsByCompany(company));
         } else if (yearModelStart != null && yearModelEnd != null) {
-            return new CarResponsList(carService.getCarsByYear(Year.of(yearModelStart), Year.of(yearModelEnd)));
+            return new CarResponsList(carService.getCarsBetweenYears(Year.of(yearModelStart), Year.of(yearModelEnd)));
         } else if (model != null && !model.isEmpty()) {
             return new CarResponsList(carService.getCarsByModel(model));
         } else {
@@ -64,6 +64,11 @@ public class CarResource {
                     .entity("License number already exists")
                     .build();
         }
+        if (carService.combinationExists(car.company(),car.model(), Year.of(car.yearModel())))
+            return Response.status(Response.Status.CONFLICT)
+                    .entity("Combination already exists")
+                    .build();
+
         Car newCar = carService.createCar(car);
         return Response.status(Response.Status.CREATED)
                 .header("Location", "/api/cars/" + newCar.getId())
