@@ -163,4 +163,21 @@ class CarServiceTest {
 
     }
 
+    @Test
+    @DisplayName("CreateCar should return CreatedCar")
+    void createCarShouldReturnCreatedCar()  {
+        CreateCar createCar = new CreateCar("Volvo", "V70", "Blue", 2001, "DEF456");
+
+        Car mappedCar = CarMapper.map(createCar);
+        mappedCar.setId(1L); // Simulera att ID:t sätts efter insättning i databasen
+
+        when(carRepository.insert(any(Car.class))).thenReturn(mappedCar);
+
+        Car result = carService.createCar(createCar);
+
+        assertNotNull(result);
+        assertEquals(mappedCar, result);
+        verify(carRepository, times(1)).insert(any(Car.class));
+    }
+
     }
