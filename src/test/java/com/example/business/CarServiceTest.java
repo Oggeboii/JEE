@@ -153,4 +153,14 @@ class CarServiceTest {
 
     }
 
+    @Test
+    @DisplayName("All cars are returned when getCars is called")
+    void allCarsAreReturnedWhenGetCarsIsCalled() {
+        List<Car> cars = cars();
+        when(carRepository.findAll()).thenReturn(cars.stream());
+        List<CarRespons> carRespons = carService.getCars();
+        assertEquals(2, carRespons.size());
+
+    }
+
     }
