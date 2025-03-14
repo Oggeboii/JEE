@@ -203,4 +203,23 @@ class CarServiceTest {
         assertEquals("Red", oldCar.getDescription());
         assertEquals(Year.of(2002), oldCar.getYearModel());
     }
+    @Test
+    @DisplayName("NotFound is thrown if updateCar can not find car with id")
+    void notFoundIsThrownIfUpdateCarCanNotFindCarWithId(){
+        Long carId = 1L;
+        UpdateCar updateCar = new UpdateCar("Volvo", "V70", "Red", Year.of(2002));
+
+        when(carRepository.findById(carId)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(NotFound.class, () -> {
+            carService.updateCar(carId, updateCar);
+        });
+
+        String expectedMessage = "Car with id " + carId + " not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+        verify(carRepository, times(1)).findById(carId);
+        verify(carRepository, times(0)).update(any(Car.class));
+    }
     }
