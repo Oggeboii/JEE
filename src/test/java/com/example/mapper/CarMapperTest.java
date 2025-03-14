@@ -2,6 +2,7 @@ package com.example.mapper;
 
 import com.example.dto.CarRespons;
 import com.example.dto.CreateCar;
+import com.example.dto.UpdateCar;
 import com.example.entity.Car;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,8 +44,8 @@ class CarMapperTest {
 
 
     @Test
-    @DisplayName("Map createCar t Car")
-    void mapCreateCarTpCar() {
+    @DisplayName("Map createCar to Car")
+    void mapCreateCarToCar() {
         CreateCar createCar = new CreateCar(
                 "Volvo", "V70", "Blue", 2001, "ABC123");
         Car car = CarMapper.map(createCar);
@@ -55,6 +56,16 @@ class CarMapperTest {
         assertEquals(Year.of(2001), car.getYearModel());
         assertEquals("ABC123", car.getLicenseNumber());
     }
+
+    @Test
+    @DisplayName("Map creatCar to car returns null")
+    void mapCreatCarToCarReturnsNull(){
+        CreateCar createCar = null;
+        Car car = CarMapper.map(createCar);
+        assertNull(car);
+    }
+
+
 
 
 }
