@@ -42,5 +42,19 @@ class CarMapperTest {
     }
 
 
+    @Test
+    @DisplayName("Map createCar t Car")
+    void mapCreateCarTpCar() {
+        CreateCar createCar = new CreateCar(
+                "Volvo", "V70", "Blue", 2001, "ABC123");
+        Car car = CarMapper.map(createCar);
+        assertNotNull(car);
+        assertEquals("Volvo", car.getCompany());
+        assertEquals("V70", car.getModel());
+        assertEquals("Blue", car.getDescription());
+        assertEquals(Year.of(2001), car.getYearModel());
+        assertEquals("ABC123", car.getLicenseNumber());
+    }
+
 
 }
