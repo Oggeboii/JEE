@@ -40,7 +40,7 @@ public class CarMapper {
             existingCar.setModel(updateCar.model());
         }
         if (updateCar.yearModel() != null) {
-            existingCar.setYearModel(updateCar.yearModel());
+            existingCar.setYearModel(Year.of(updateCar.yearModel()));
         }
     }
 

@@ -29,14 +29,17 @@ public class CarResource {
     public CarResource() {
     }
 
+    //"http://localhost:8080/api/cars/one"
     @GET
     @Path("one")
     @Produces(MediaType.APPLICATION_JSON)
     public CarRespons getCar(@QueryParam("id") Long id, @QueryParam("licenseNumber") String licenseNumber) {
         if (id != null) {
             return carService.getCarById(id);
+            //"http://localhost:8080/api/cars/one?id=1"
         } else
             return carService.getCarByLicenseNumber(licenseNumber);
+        //"http://localhost:8080/api/cars/one?licenseNumber=ABC123"
     }
 
     //"http://localhost:8080/api/cars"
@@ -45,10 +48,13 @@ public class CarResource {
     public CarResponsList getCars(@QueryParam("company") String company, @QueryParam("yearModelStart") Integer yearModelStart, @QueryParam("yearModelEnd") Integer yearModelEnd, @QueryParam("model") String model) {
         if (company != null && !company.isEmpty()) {
             return new CarResponsList(carService.getCarsByCompany(company));
+            //"http://localhost:8080/api/cars?company=Volvo"
         } else if (yearModelStart != null && yearModelEnd != null) {
             return new CarResponsList(carService.getCarsBetweenYears(Year.of(yearModelStart), Year.of(yearModelEnd)));
+            //"http://localhost:8080/api/cars?yearModelStart=2000&yearModelEnd=2003"
         } else if (model != null && !model.isEmpty()) {
             return new CarResponsList(carService.getCarsByModel(model));
+            //"http://localhost:8080/api/cars?model=V70"
         } else {
             return new CarResponsList(carService.getCars());
         }
@@ -64,7 +70,7 @@ public class CarResource {
                     .entity("License number already exists")
                     .build();
         }
-        if (carService.combinationExists(car.company(),car.model(), Year.of(car.yearModel())))
+        if (carService.combinationExists(car.company(), car.model(), Year.of(car.yearModel())))
             return Response.status(Response.Status.CONFLICT)
                     .entity("Combination already exists")
                     .build();

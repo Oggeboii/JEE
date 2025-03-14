@@ -78,13 +78,13 @@ class CarMapperTest {
         existingCar.setLicenseNumber("ABC123");
 
         UpdateCar updateCar = new UpdateCar(
-                "Ford", "Transit", "Blue", Year.of(2003));
+                "Ford", "Transit", null, 2003);
         CarMapper.map(updateCar,existingCar);
 
         assertEquals(1L,existingCar.getId());
         assertEquals("Ford", existingCar.getCompany());
         assertEquals("Transit", existingCar.getModel());
-        assertEquals("Blue", existingCar.getDescription());
+        assertEquals("Black", existingCar.getDescription());
         assertEquals(Year.of(2003), existingCar.getYearModel());
         assertEquals("ABC123", existingCar.getLicenseNumber());
     }

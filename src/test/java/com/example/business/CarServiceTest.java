@@ -214,7 +214,7 @@ class CarServiceTest {
     @DisplayName("UpdateCar should updated car")
     void updateCarShouldUpdatedCar() {
         Long carId = 1L;
-        UpdateCar updateCar = new UpdateCar("Volvo", "V70", "Red", Year.of(2002));
+        UpdateCar updateCar = new UpdateCar("Volvo", "V70", "Red", 2002);
 
         Car oldCar = new Car();
         oldCar.setId(carId);
@@ -238,7 +238,7 @@ class CarServiceTest {
     @DisplayName("NotFound is thrown if updateCar can not find car with id")
     void notFoundIsThrownIfUpdateCarCanNotFindCarWithId() {
         Long carId = 1L;
-        UpdateCar updateCar = new UpdateCar("Volvo", "V70", "Red", Year.of(2002));
+        UpdateCar updateCar = new UpdateCar("Volvo", "V70", "Red", 2002);
 
         when(carRepository.findById(carId)).thenReturn(Optional.empty());
 

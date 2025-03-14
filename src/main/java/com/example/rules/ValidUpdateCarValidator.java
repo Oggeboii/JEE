@@ -16,13 +16,13 @@ public class ValidUpdateCarValidator implements ConstraintValidator<ValidCar, Up
                     .addPropertyNode("company").addConstraintViolation();
             return false;
         }
-        if (updateCar.yearModel().isAfter(Year.now())) {
+        if (Year.of(updateCar.yearModel()).isAfter(Year.now())) {
             context.buildConstraintViolationWithTemplate("yearModel cannot be after this year")
                     .addPropertyNode(yearModel).addConstraintViolation();
             return false;
         }
 
-        if (updateCar.yearModel().isBefore(Year.of(1884))) {
+        if (Year.of(updateCar.yearModel()).isBefore(Year.of(1884))) {
             context.buildConstraintViolationWithTemplate("yearModel cannot be before 1884")
                     .addPropertyNode(yearModel).addConstraintViolation();
             return false;
