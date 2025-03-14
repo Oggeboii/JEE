@@ -180,4 +180,27 @@ class CarServiceTest {
         verify(carRepository, times(1)).insert(any(Car.class));
     }
 
+    @Test
+    @DisplayName("UpdateCar should updated car")
+    void updateCarShouldUpdatedCar(){
+        Long carId = 1L;
+        UpdateCar updateCar = new UpdateCar("Volvo", "V70", "Red", Year.of(2002));
+
+        Car oldCar = new Car();
+        oldCar.setId(carId);
+        oldCar.setCompany("Volvo");
+        oldCar.setModel("V70");
+        oldCar.setDescription("Blue");
+        oldCar.setYearModel(Year.of(2001));
+
+        when(carRepository.findById(carId)).thenReturn(Optional.of(oldCar));
+
+        carService.updateCar(carId, updateCar);
+
+        verify(carRepository, times(1)).findById(carId);
+        verify(carRepository, times(1)).update(oldCar);
+
+        assertEquals("Red", oldCar.getDescription());
+        assertEquals(Year.of(2002), oldCar.getYearModel());
+    }
     }
