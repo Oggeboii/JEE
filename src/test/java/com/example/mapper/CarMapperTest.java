@@ -65,6 +65,28 @@ class CarMapperTest {
         assertNull(car);
     }
 
+    @Test
+    @DisplayName("Map updateCar to car")
+    void mapUpdateCarToCar(){
+        Car existingCar = new Car();
+        existingCar.setId(1L);
+        existingCar.setCompany("Volvo");
+        existingCar.setModel("V70");
+        existingCar.setDescription("Black");
+        existingCar.setYearModel(Year.of(2001));
+        existingCar.setLicenseNumber("ABC123");
+
+        UpdateCar updateCar = new UpdateCar(
+                "Volvo", "V70", "Blue", Year.of(2001));
+        CarMapper.map(updateCar,existingCar);
+
+        assertEquals(1L,existingCar.getId());
+        assertEquals("Volvo", existingCar.getCompany());
+        assertEquals("V70", existingCar.getModel());
+        assertEquals("Blue", existingCar.getDescription());
+        assertEquals(Year.of(2001), existingCar.getYearModel());
+        assertEquals("ABC123", existingCar.getLicenseNumber());
+    }
 
 
 
