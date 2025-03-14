@@ -1,8 +1,11 @@
 package com.example.business;
 
 import com.example.dto.CarRespons;
+import com.example.dto.CreateCar;
+import com.example.dto.UpdateCar;
 import com.example.entity.Car;
 import com.example.exceptions.NotFound;
+import com.example.mapper.CarMapper;
 import com.example.persistence.CarRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +29,30 @@ class CarServiceTest {
 
     @InjectMocks
     private CarService carService;
+
+    static List<Car> cars() {
+        List<Car> cars = new ArrayList<>();
+
+        Car car = new Car();
+        car.setId(1L);
+        car.setCompany("Volvo");
+        car.setModel("V70");
+        car.setDescription("Blue");
+        car.setYearModel(Year.of(2000));
+        car.setLicenseNumber("ABC123");
+
+        Car car2 = new Car();
+        car2.setId(2L);
+        car2.setCompany("Volvo");
+        car2.setModel("V70");
+        car2.setDescription("Black");
+        car2.setYearModel(Year.of(2000));
+        car2.setLicenseNumber("DEF456");
+
+        cars.add(car);
+        cars.add(car2);
+        return cars;
+    }
 
     @BeforeEach
     void setUp() {
@@ -81,31 +108,6 @@ class CarServiceTest {
         assertThrows(NotFound.class, () -> carService.getCarByLicenseNumber("ABC123"));
     }
 
-   static List<Car> cars(){
-       List<Car> cars = new ArrayList<>();
-
-       Car car = new Car();
-       car.setId(1L);
-       car.setCompany("Volvo");
-       car.setModel("V70");
-       car.setDescription("Blue");
-       car.setYearModel(Year.of(2000));
-       car.setLicenseNumber("ABC123");
-
-       Car car2 = new Car();
-       car2.setId(2L);
-       car2.setCompany("Volvo");
-       car2.setModel("V70");
-       car2.setDescription("Black");
-       car2.setYearModel(Year.of(2000));
-       car2.setLicenseNumber("DEF456");
-
-       cars.add(car);
-       cars.add(car2);
-       return cars;
-   }
-
-
     @Test
     @DisplayName("Returns all cars from same company when GetCarsByCompany is called")
     void returnsAllCarsFromSameCompanyWhenGetCarsByCompanyIsCalled() {
@@ -122,9 +124,9 @@ class CarServiceTest {
     void returnsAllCarsWithinYearIntervallWhenGetCarsByYearIsCalled() {
         List<Car> cars = cars();
 
-        when(carRepository.findBetweenYearModel(Year.of(2000),Year.of(2001))).thenReturn(cars);
+        when(carRepository.findByYearModelBetween(Year.of(2000), Year.of(2001))).thenReturn(cars);
 
-        List<CarRespons> carRespons = carService.getCarsBetweenYears(Year.of(2000),Year.of(2001));
+        List<CarRespons> carRespons = carService.getCarsBetweenYears(Year.of(2000), Year.of(2001));
         assertEquals(2, carRespons.size());
     }
 
@@ -139,7 +141,16 @@ class CarServiceTest {
         assertEquals(2, carRespons.size());
     }
 
+    @Test
+    @DisplayName("CombinationExists returns true when the combination already exists")
+    void combinationExistsReturnsTrueWhenTheCombinationAlreadyExists() {
+        Car car = new Car();
+        car.setModel("ModelX");
+        car.setYearModel(Year.of(2020));
+        when(carRepository.findByCompany("Tesla")).thenReturn(List.of(car));
 
+        assertTrue(carService.combinationExists("Tesla", "ModelX", Year.of(2020)));
 
+    }
 
-}
+    }
