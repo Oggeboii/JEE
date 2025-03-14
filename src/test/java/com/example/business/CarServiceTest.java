@@ -165,7 +165,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("CreateCar should return CreatedCar")
-    void createCarShouldReturnCreatedCar()  {
+    void createCarShouldReturnCreatedCar() {
         CreateCar createCar = new CreateCar("Volvo", "V70", "Blue", 2001, "DEF456");
 
         Car mappedCar = CarMapper.map(createCar);
@@ -182,7 +182,7 @@ class CarServiceTest {
 
     @Test
     @DisplayName("UpdateCar should updated car")
-    void updateCarShouldUpdatedCar(){
+    void updateCarShouldUpdatedCar() {
         Long carId = 1L;
         UpdateCar updateCar = new UpdateCar("Volvo", "V70", "Red", Year.of(2002));
 
@@ -203,9 +203,10 @@ class CarServiceTest {
         assertEquals("Red", oldCar.getDescription());
         assertEquals(Year.of(2002), oldCar.getYearModel());
     }
+
     @Test
     @DisplayName("NotFound is thrown if updateCar can not find car with id")
-    void notFoundIsThrownIfUpdateCarCanNotFindCarWithId(){
+    void notFoundIsThrownIfUpdateCarCanNotFindCarWithId() {
         Long carId = 1L;
         UpdateCar updateCar = new UpdateCar("Volvo", "V70", "Red", Year.of(2002));
 
@@ -222,9 +223,10 @@ class CarServiceTest {
         verify(carRepository, times(1)).findById(carId);
         verify(carRepository, times(0)).update(any(Car.class));
     }
+
     @Test
     @DisplayName("Car is deleted when deleteCar is called")
-    void carIsDeletedWhenDeleteCarIsCalled(){
+    void carIsDeletedWhenDeleteCarIsCalled() {
         Long carId = 1L;
         Car car = new Car();
         car.setId(carId);
@@ -242,6 +244,24 @@ class CarServiceTest {
         verify(carRepository, times(1)).delete(car);
     }
 
+    @Test
+    @DisplayName("NotFound is thrown if deleteCar can not find car with id")
+    void notFoundIsThrownIfDeleteCarCanNotFindCarWithId() {
+        Long carId = 1L;
 
+        when(carRepository.findById(carId)).thenReturn(Optional.empty());
 
+        Exception exception = assertThrows(NotFound.class, () -> {
+            carService.deleteCar(carId);
+        });
+
+        String expectedMessage = "Car with id " + carId + " not found";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+        verify(carRepository, times(1)).findById(carId);
+        verify(carRepository, times(0)).delete(any(Car.class));
     }
+
+
+}
