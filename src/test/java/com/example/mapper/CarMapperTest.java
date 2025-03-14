@@ -66,8 +66,9 @@ class CarMapperTest {
     }
 
     @Test
-    @DisplayName("Map updateCar to car")
-    void mapUpdateCarToCar(){
+    @DisplayName("Map updateCar to map car updates car but still same car")
+    void mapUpdateCarToMapCarUpdatesCarButStillSameCar(){
+
         Car existingCar = new Car();
         existingCar.setId(1L);
         existingCar.setCompany("Volvo");
@@ -77,7 +78,31 @@ class CarMapperTest {
         existingCar.setLicenseNumber("ABC123");
 
         UpdateCar updateCar = new UpdateCar(
-                "Volvo", "V70", "Blue", Year.of(2001));
+                "Ford", "Transit", "Blue", Year.of(2003));
+        CarMapper.map(updateCar,existingCar);
+
+        assertEquals(1L,existingCar.getId());
+        assertEquals("Ford", existingCar.getCompany());
+        assertEquals("Transit", existingCar.getModel());
+        assertEquals("Blue", existingCar.getDescription());
+        assertEquals(Year.of(2003), existingCar.getYearModel());
+        assertEquals("ABC123", existingCar.getLicenseNumber());
+    }
+
+    @Test
+    @DisplayName("Map updateCar to map car partial update")
+    void mapUpdateCarToMapCarPartialUpdate(){
+
+        Car existingCar = new Car();
+        existingCar.setId(1L);
+        existingCar.setCompany("Volvo");
+        existingCar.setModel("V70");
+        existingCar.setDescription("Black");
+        existingCar.setYearModel(Year.of(2001));
+        existingCar.setLicenseNumber("ABC123");
+
+        UpdateCar updateCar = new UpdateCar(
+                null, null, "Blue", null);
         CarMapper.map(updateCar,existingCar);
 
         assertEquals(1L,existingCar.getId());
@@ -87,6 +112,7 @@ class CarMapperTest {
         assertEquals(Year.of(2001), existingCar.getYearModel());
         assertEquals("ABC123", existingCar.getLicenseNumber());
     }
+
 
 
 
