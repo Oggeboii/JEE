@@ -33,6 +33,14 @@ class CarMapperTest {
         assertEquals("ABC123", carRespons.licenseNumber());
     }
 
+    @Test
+    @DisplayName("Map car to CarRespons returns null")
+    void mapCarToCarResponsReturnsNull() {
+        Car car = null;
+        CarRespons carRespons = CarMapper.map(car);
+        assertNull(carRespons);
+    }
+
 
 
 }
