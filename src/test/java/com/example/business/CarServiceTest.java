@@ -222,4 +222,26 @@ class CarServiceTest {
         verify(carRepository, times(1)).findById(carId);
         verify(carRepository, times(0)).update(any(Car.class));
     }
+    @Test
+    @DisplayName("Car is deleted when deleteCar is called")
+    void carIsDeletedWhenDeleteCarIsCalled(){
+        Long carId = 1L;
+        Car car = new Car();
+        car.setId(carId);
+        car.setCompany("Volvo");
+        car.setModel("V70");
+        car.setDescription("Blue");
+        car.setYearModel(Year.of(2001));
+        car.setLicenseNumber("DEF456");
+
+        when(carRepository.findById(carId)).thenReturn(Optional.of(car));
+
+        carService.deleteCar(carId);
+
+        verify(carRepository, times(1)).findById(carId);
+        verify(carRepository, times(1)).delete(car);
+    }
+
+
+
     }
