@@ -242,9 +242,7 @@ class CarServiceTest {
 
         when(carRepository.findById(carId)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(NotFound.class, () -> {
-            carService.updateCar(carId, updateCar);
-        });
+        Exception exception = assertThrows(NotFound.class, () -> carService.updateCar(carId, updateCar));
 
         String expectedMessage = "Car with id " + carId + " not found";
         String actualMessage = exception.getMessage();
@@ -281,9 +279,7 @@ class CarServiceTest {
 
         when(carRepository.findById(carId)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(NotFound.class, () -> {
-            carService.deleteCar(carId);
-        });
+        Exception exception = assertThrows(NotFound.class, () -> carService.deleteCar(carId));
 
         String expectedMessage = "Car with id " + carId + " not found";
         String actualMessage = exception.getMessage();
