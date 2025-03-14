@@ -70,7 +70,7 @@ public class CarService {
     }
 
     public List<CarRespons> getCarsBetweenYears(Year yearStart, Year yearEnd) {
-        List<Car> cars = repository.findBetweenYearModel(yearStart, yearEnd);
+        List<Car> cars = repository.findByYearModelBetween(yearStart, yearEnd);
         return cars
                 .stream()
                 .map(CarMapper::map)

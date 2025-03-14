@@ -18,7 +18,8 @@ public interface CarRepository extends CrudRepository<Car, Long> {
     @Find
     List<Car> findByCompany(String company);
 
-    List<Car> findBetweenYearModel(@By("yearModel") Year yearModelStart, @By("yearModel") Year yearModelEnd);
+    @Query("select c from Car c where c.yearModel >= :yearModelStart and c.yearModel <= :yearModelEnd")
+    List<Car> findByYearModelBetween(@Param("yearModelStart") Year yearModelStart, @Param("yearModelEnd") Year yearModelEnd);
 
     @Find
     List<Car> findByYearModel(Year yearModel);
