@@ -1,0 +1,38 @@
+package com.example.mapper;
+
+import com.example.dto.CarRespons;
+import com.example.dto.CreateCar;
+import com.example.entity.Car;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.time.Year;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class CarMapperTest {
+
+    @Test
+    @DisplayName("Map Car to CarRespons should be same")
+    void mapCarToCarResponsShouldBeSame() {
+        Car car = new Car();
+        car.setId(1L);
+        car.setCompany("Volvo");
+        car.setModel("V70");
+        car.setDescription("Blue");
+        car.setYearModel(Year.of(2001));
+        car.setLicenseNumber("ABC123");
+
+        CarRespons carRespons = CarMapper.map(car);
+        assertNotNull(carRespons);
+        assertEquals(1L, carRespons.id());
+        assertEquals("Volvo", carRespons.company());
+        assertEquals("V70", carRespons.model());
+        assertEquals("Blue", carRespons.description());
+        assertEquals(2001, carRespons.yearModel());
+        assertEquals("ABC123", carRespons.licenseNumber());
+    }
+
+
+
+}
