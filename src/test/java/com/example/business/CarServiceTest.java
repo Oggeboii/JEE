@@ -150,7 +150,38 @@ class CarServiceTest {
         when(carRepository.findByCompany("Tesla")).thenReturn(List.of(car));
 
         assertTrue(carService.combinationExists("Tesla", "ModelX", Year.of(2020)));
+    }
+    
+    @Test
+    @DisplayName("licensNumberExist return true")
+    void licensNumberExistReturnTrue(){
+        Car car = new Car();
+        car.setId(1L);
+        car.setCompany("Volvo");
+        car.setModel("V70");
+        car.setDescription("Blue");
+        car.setYearModel(Year.of(2000));
+        car.setLicenseNumber("ABC123");
 
+        when(carRepository.findByLicenseNumber("ABC123")).thenReturn(Optional.of(car));
+        assertTrue(carService.licenseNumberExists(car.getLicenseNumber()));
+        verify(carRepository, times(1)).findByLicenseNumber("ABC123");
+    }
+
+    @Test
+    @DisplayName("licensNumberExist return false")
+    void licensNumberExistReturnFalse(){
+        Car car = new Car();
+        car.setId(1L);
+        car.setCompany("Volvo");
+        car.setModel("V70");
+        car.setDescription("Blue");
+        car.setYearModel(Year.of(2000));
+        car.setLicenseNumber("ABC123");
+
+        when(carRepository.findByLicenseNumber("XYZ456")).thenReturn(Optional.of(car));
+        assertFalse(carService.licenseNumberExists(car.getLicenseNumber()));
+        verify(carRepository, times(1)).findByLicenseNumber("ABC123");
     }
 
     @Test
@@ -160,7 +191,6 @@ class CarServiceTest {
         when(carRepository.findAll()).thenReturn(cars.stream());
         List<CarRespons> carRespons = carService.getCars();
         assertEquals(2, carRespons.size());
-
     }
 
     @Test
@@ -262,6 +292,4 @@ class CarServiceTest {
         verify(carRepository, times(1)).findById(carId);
         verify(carRepository, times(0)).delete(any(Car.class));
     }
-
-
 }
